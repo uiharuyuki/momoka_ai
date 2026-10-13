@@ -15,6 +15,10 @@ test('shared navigation follows the generated comp shape on desktop and mobile',
   assert.match(app, /@media\s*\(max-width:\s*720px\)[\s\S]*\.navigation[^}]*grid-template-columns:\s*repeat\(5,\s*minmax\(0,\s*1fr\)\)/s)
 })
 
+test('the root reserves a stable scrollbar gutter so Talk and content pages do not shift', () => {
+  assert.match(base, /html\s*\{[^}]*overflow-y:\s*auto[^}]*scrollbar-gutter:\s*stable/s)
+})
+
 test('Talk intro keeps one clear heading and desktop tabs breathe away from the right edge', () => {
   assert.doesNotMatch(talk, /<p className="wire-label">AI VTUBER \/ TALK<\/p>/)
   assert.match(app, /\.site-header nav[^}]*margin-right:\s*clamp\(18px,\s*2\.5vw,\s*40px\)/s)
