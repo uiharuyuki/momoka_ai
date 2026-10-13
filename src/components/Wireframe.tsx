@@ -6,11 +6,17 @@ import { navigation } from '../navigation'
 export function Header() {
   return (
     <header className="site-header">
-      <Link className="logo-placeholder" to="/" aria-label="Talkへ戻る（ロゴ仮表示）">LOGO</Link>
+      <Link className="logo-placeholder" to="/" aria-label="Momoka Talkへ戻る">
+        <span className="brand-wordmark">MOMOKA</span>
+        <span className="brand-tagline">AI VTUBER / TALK</span>
+      </Link>
       <nav aria-label="メインナビゲーション">
         <ul className="navigation">
           {navigation.map(({ label, path }) => (
-            <li key={path}><NavLink to={path} end>{label}</NavLink></li>
+            <li key={path}><NavLink to={path} end>
+              <span className="navigation-icon" aria-hidden="true">{label.slice(0, 1)}</span>
+              <span>{label}</span>
+            </NavLink></li>
           ))}
         </ul>
       </nav>

@@ -24,7 +24,7 @@ test('desktop and mobile layout ratios are encoded in the wireframe', () => {
 test('composer uses a round accessible send control like the target UI', () => {
   assert.match(talk, /aria-label="送信"/)
   assert.match(talk, /className="send-icon"/)
-  assert.match(css, /\.message-form button[^}]*width:\s*54px[^}]*height:\s*54px[^}]*border-radius:\s*50%/s)
+  assert.match(css, /\.message-form button[^}]*width:\s*48px[^}]*height:\s*48px[^}]*border-radius:\s*50%/s)
   assert.match(css, /@media\s*\(max-width:\s*720px\)[\s\S]*\.message-form button[^}]*width:\s*44px[^}]*height:\s*44px/s)
 })
 
