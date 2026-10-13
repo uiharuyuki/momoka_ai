@@ -73,7 +73,6 @@ export function TalkPage() {
       <section className="character-stage" aria-label="キャラクター表示エリア">
         {mode === 'intro' && (
           <div className="character-copy">
-            <p className="wire-label">AI VTUBER / TALK</p>
             <p className="character-greeting">少し、話していく？</p>
           </div>
         )}

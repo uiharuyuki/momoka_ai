@@ -5,6 +5,7 @@ import { test } from 'node:test'
 const app = readFileSync(new URL('../src/App.css', import.meta.url), 'utf8')
 const base = readFileSync(new URL('../src/index.css', import.meta.url), 'utf8')
 const wireframe = readFileSync(new URL('../src/components/Wireframe.tsx', import.meta.url), 'utf8')
+const talk = readFileSync(new URL('../src/pages/TalkPage.tsx', import.meta.url), 'utf8')
 
 test('shared navigation follows the generated comp shape on desktop and mobile', () => {
   assert.match(wireframe, /className="brand-wordmark"/)
@@ -12,6 +13,12 @@ test('shared navigation follows the generated comp shape on desktop and mobile',
   assert.match(app, /\.logo-placeholder[^}]*border:\s*0[^}]*background:\s*transparent/s)
   assert.match(app, /@media\s*\(max-width:\s*720px\)[\s\S]*\.site-header nav[^}]*position:\s*fixed[^}]*bottom:\s*0/s)
   assert.match(app, /@media\s*\(max-width:\s*720px\)[\s\S]*\.navigation[^}]*grid-template-columns:\s*repeat\(5,\s*minmax\(0,\s*1fr\)\)/s)
+})
+
+test('Talk intro keeps one clear heading and desktop tabs breathe away from the right edge', () => {
+  assert.doesNotMatch(talk, /<p className="wire-label">AI VTUBER \/ TALK<\/p>/)
+  assert.match(app, /\.site-header nav[^}]*margin-right:\s*clamp\(18px,\s*2\.5vw,\s*40px\)/s)
+  assert.match(app, /@media\s*\(max-width:\s*720px\)[\s\S]*\.site-header nav[^}]*margin-right:\s*0/s)
 })
 
 test('Talk geometry uses the slimmer production-sized composer and rounded chat surfaces', () => {

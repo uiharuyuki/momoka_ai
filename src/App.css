@@ -12,7 +12,7 @@
 .logo-placeholder { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; width: auto; min-height: 50px; border: 0; background: transparent; text-decoration: none; }
 .brand-wordmark { font-size: 24px; line-height: 1; letter-spacing: .08em; }
 .brand-tagline { margin-top: 6px; color: var(--muted); font-size: 9px; letter-spacing: .18em; }
-.site-header nav { min-width: 0; justify-self: end; }
+.site-header nav { min-width: 0; justify-self: end; margin-right: clamp(18px, 2.5vw, 40px); }
 .navigation { display: flex; justify-content: flex-end; align-items: center; gap: 30px; list-style: none; margin: 0; padding: 0; }
 .navigation li { display: flex; align-items: center; }
 .navigation li + li::before { content: none; }
@@ -31,8 +31,8 @@
 .character-stage { position: relative; display: flex; justify-content: center; min-width: 0; min-height: 0; padding: clamp(24px, 5dvh, 64px) 36px; transition: padding 280ms ease; }
 .talk-page-intro .character-stage { align-items: stretch; padding-bottom: 18px; }
 .talk-page-conversation .character-stage { animation: character-shift 320ms ease both; }
-.character-copy { position: absolute; z-index: 1; top: clamp(20px, 4dvh, 44px); left: 50%; translate: -50% 0; width: min(90%, 620px); text-align: center; pointer-events: none; }
-.character-greeting { margin-top: 8px; font-size: clamp(24px, 3vw, 44px); line-height: 1.2; }
+.character-copy { position: absolute; z-index: 1; top: clamp(52px, 8dvh, 76px); left: 50%; translate: -50% 0; width: min(90%, 620px); text-align: center; pointer-events: none; }
+.character-greeting { margin-top: 0; font-size: clamp(24px, 3vw, 44px); line-height: 1.2; }
 .wire-label { color: var(--muted); font-size: 10px; letter-spacing: .16em; }
 .character-placeholder { flex: 1; max-width: 720px; border-radius: 40px; font-size: 23px; }
 .talk-page-conversation .character-placeholder { max-width: none; }
@@ -137,7 +137,7 @@
   .logo-placeholder { width: auto; min-height: 42px; }
   .brand-wordmark { font-size: 21px; }
   .brand-tagline { margin-top: 4px; font-size: 8px; }
-  .site-header nav { position: fixed; z-index: 20; right: 0; bottom: 0; left: 0; width: 100%; padding: 6px 8px max(6px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); border-radius: 24px 24px 0 0; background: var(--paper); }
+  .site-header nav { position: fixed; z-index: 20; right: 0; bottom: 0; left: 0; width: 100%; margin-right: 0; padding: 6px 8px max(6px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); border-radius: 24px 24px 0 0; background: var(--paper); }
   .navigation { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; width: 100%; }
   .navigation li { display: block; min-width: 0; }
   .navigation a { gap: 3px; min-height: 58px; padding: 6px 2px; border: 0; border-radius: 16px; font-size: 10px; line-height: 1.1; }
