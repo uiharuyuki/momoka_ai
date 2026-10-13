@@ -60,7 +60,9 @@ export function TalkPage() {
         onKeyDown={(event) => {
           if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.keyCode === 229)) event.preventDefault()
         }} />
-      <button type="submit" disabled={!input.trim()}>送信</button>
+      <button type="submit" aria-label="送信" disabled={!input.trim()}>
+        <span className="send-icon" aria-hidden="true">➤</span>
+      </button>
     </form>
   )
 

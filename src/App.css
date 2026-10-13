@@ -51,9 +51,12 @@
 .message-user { grid-template-columns: minmax(0, 1fr) 36px; margin-left: 20px; }
 .message-user .message-avatar { grid-column: 2; grid-row: 1; }
 .message-user .message-content { grid-column: 1; grid-row: 1; background: var(--placeholder); }
-.message-form { display: grid; grid-template-columns: minmax(0, 1fr) 84px; gap: 10px; padding: 14px 16px; border-top: 1px solid var(--line); }
-.message-form input { width: 100%; min-width: 0; height: 54px; padding: 10px 14px; border: 1px solid var(--line); background: var(--paper); }
-.message-form button { padding-inline: 12px; white-space: nowrap; }
+.message-form { display: grid; grid-template-columns: minmax(0, 1fr) 54px; align-items: center; gap: 10px; padding: 14px 16px; border-top: 1px solid var(--line); }
+.message-form input { width: 100%; min-width: 0; height: 54px; padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); }
+.message-form button { width: 54px; height: 54px; min-height: 0; padding: 0; border: 0; border-radius: 50%; color: #fff; background: #e87870; box-shadow: 0 6px 14px rgb(151 74 70 / 18%); transition: background 180ms ease, transform 180ms ease; }
+.message-form button:not(:disabled):hover { background: #d9655f; transform: translateY(-1px); }
+.message-form button:disabled { color: #fff; background: #cfc8cb; box-shadow: none; }
+.send-icon { display: block; font-size: 21px; line-height: 1; translate: 1px 0; }
 @keyframes panel-enter { from { opacity: 0; translate: 18px 0; } to { opacity: 1; translate: 0 0; } }
 @keyframes character-shift { from { opacity: .82; translate: 8% 0; } to { opacity: 1; translate: 0 0; } }
 @media (prefers-reduced-motion: reduce) { .conversation-panel, .talk-page-conversation .character-stage { animation: none; } }
@@ -143,8 +146,10 @@
   .conversation-heading { min-height: 42px; padding: 8px 16px; }
   .conversation-heading h2 { font-size: 16px; }
   .conversation-history { padding: 14px; gap: 16px; }
-  .message-form { padding: 10px 12px; grid-template-columns: minmax(0, 1fr) 72px; }
+  .message-form { padding: 10px 12px; grid-template-columns: minmax(0, 1fr) 44px; }
   .message-form input { height: 44px; }
+  .message-form button { width: 44px; height: 44px; }
+  .send-icon { font-size: 18px; }
   .message-avatar { width: 28px; height: 28px; }
   .message { grid-template-columns: 28px minmax(0, 1fr); gap: 8px; }
   .message-user { grid-template-columns: minmax(0, 1fr) 28px; }

@@ -21,6 +21,13 @@ test('desktop and mobile layout ratios are encoded in the wireframe', () => {
   assert.match(css, /grid-template-rows:\s*minmax\(150px,\s*30dvh\)\s+minmax\(0,\s*1fr\)/)
 })
 
+test('composer uses a round accessible send control like the target UI', () => {
+  assert.match(talk, /aria-label="送信"/)
+  assert.match(talk, /className="send-icon"/)
+  assert.match(css, /\.message-form button[^}]*width:\s*54px[^}]*height:\s*54px[^}]*border-radius:\s*50%/s)
+  assert.match(css, /@media\s*\(max-width:\s*720px\)[\s\S]*\.message-form button[^}]*width:\s*44px[^}]*height:\s*44px/s)
+})
+
 test('GitHub Pages build uses hash routing and the repository base path', () => {
   assert.match(main, /HashRouter/)
   assert.match(vite, /base:\s*'\/momoka_ai\/'/)
