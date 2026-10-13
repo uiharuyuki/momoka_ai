@@ -28,6 +28,12 @@ test('composer uses a round accessible send control like the target UI', () => {
   assert.match(css, /@media\s*\(max-width:\s*720px\)[\s\S]*\.message-form button[^}]*width:\s*44px[^}]*height:\s*44px/s)
 })
 
+test('composer outer frame is a production-shaped capsule rather than a square wireframe box', () => {
+  assert.match(css, /\.message-form\s*\{[^}]*border:\s*1px solid var\(--line\)[^}]*border-radius:\s*999px/s)
+  assert.doesNotMatch(css, /\.message-form\s*\{[^}]*border-top:/s)
+  assert.match(css, /\.message-form input\s*\{[^}]*border:\s*0[^}]*background:\s*transparent/s)
+})
+
 test('GitHub Pages build uses hash routing and the repository base path', () => {
   assert.match(main, /HashRouter/)
   assert.match(vite, /base:\s*'\/momoka_ai\/'/)
