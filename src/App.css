@@ -148,9 +148,9 @@
 .product-image { width: 100%; aspect-ratio: 1.45; border-radius: 18px; }
 .goods-card h2 { margin-top: 16px; }
 .goods-card p { margin-top: 8px; }
-.goods-card button { margin-top: 16px; width: 100%; padding-inline: 8px; font-size: 14px; }
+.goods-card button, .goods-card .button-link { margin-top: 16px; width: 100%; padding-inline: 8px; font-size: 14px; }
 .external-store { display: grid; justify-items: center; gap: 10px; padding: 22px; border: 1px solid var(--line); border-radius: 24px; margin-top: 24px; text-align: center; }
-.external-store button { min-width: min(100%, 330px); }
+.external-store button, .external-store .button-link { min-width: min(100%, 330px); }
 .back-to-talk { text-align: center; margin-top: 20px; }
 .wire-dialog { width: min(500px, calc(100% - 40px)); color: var(--ink); border: 1px solid var(--line); border-radius: 24px; padding: 28px; }
 .wire-dialog::backdrop { background: rgb(0 0 0 / 25%); }
@@ -256,5 +256,5 @@
   .goods-card { padding: 8px; }
   .goods-card h2 { font-size: 16px; }
   .product-image { font-size: 12px; padding: 8px; }
-  .goods-card button { font-size: 12px; }
+  .goods-card button, .goods-card .button-link { font-size: 12px; }
 }

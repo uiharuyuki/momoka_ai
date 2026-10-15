@@ -155,21 +155,23 @@ export function VoicePage() {
   )
 }
 
+const externalGoodsUrl = 'https://uiharuyuki.github.io/momoka-goods-demo/'
+
 export function GoodsPage() {
   return (
     <main id="main-content" className="content-page goods-page">
-      <PageHeading title="GOODS">外部Goodsサイトへのリンクエリア（URL未設定）</PageHeading>
+      <PageHeading title="GOODS">外部Goodsサイトのワイヤーを公開しています。</PageHeading>
       <div className="goods-grid">
         {[1, 2, 3, 4].map((number) => (
           <article key={number} className="goods-card">
             <Placeholder label="PRODUCT IMAGE" className="product-image" />
             <h2>商品名 {String(number).padStart(2, '0')}（仮）</h2>
             <p className="muted">価格未設定</p>
-            <button type="button" disabled>外部サイトへ移動 ↗</button>
+            <a className="button-link" href={`${externalGoodsUrl}#/items`} target="_blank" rel="noopener noreferrer" aria-label={`商品一覧を外部サイトで見る（新しいタブ・サンプル${number}）`}>外部サイトで見る ↗</a>
           </article>
         ))}
       </div>
-      <div className="external-store"><button type="button" disabled>外部Goodsサイトへ移動 ↗</button><p className="muted">URLが未設定のため、現在は移動できません。</p></div>
+      <div className="external-store"><a className="button-link" href={externalGoodsUrl} target="_blank" rel="noopener noreferrer">外部Goodsサイトへ移動 ↗</a><p className="muted">新しいタブで外部Goodsデモを開きます。実際の購入はできません。</p></div>
       <p className="back-to-talk"><Link to="/">Back to Talk</Link></p>
     </main>
   )
