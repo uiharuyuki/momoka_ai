@@ -5,6 +5,7 @@ import { navigation } from './navigation'
 import { ActivitiesPage, GoodsPage, NotFoundPage, ProfilePage, VoicePage } from './pages/ContentPages'
 import { TalkPage } from './pages/TalkPage'
 import './App.css'
+import './pages/TalkDesign.css'
 
 function App() {
   const { pathname } = useLocation()
@@ -13,7 +14,7 @@ function App() {
   useLayoutEffect(() => {
     document.body.classList.toggle('talk-is-open', isTalk)
     const title = navigation.find((item) => item.path === pathname)?.label ?? 'Not found'
-    document.title = `${title} | ワイヤープロトタイプ`
+    document.title = `${title} | 小鳥遊ももか デザインプレビュー`
     window.scrollTo(0, 0)
     return () => document.body.classList.remove('talk-is-open')
   }, [isTalk, pathname])

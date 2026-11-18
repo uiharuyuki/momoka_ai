@@ -8,7 +8,7 @@ export function Header() {
     <header className="site-header">
       <Link className="logo-placeholder" to="/" aria-label="Momoka Talkへ戻る">
         <span className="brand-wordmark">MOMOKA</span>
-        <span className="brand-tagline">AI VTUBER / TALK</span>
+        <span className="brand-tagline">AI VTUBER</span>
       </Link>
       <nav aria-label="メインナビゲーション">
         <ul className="navigation">
@@ -43,7 +43,11 @@ export function Footer() {
       </footer>
       <dialog ref={dialog} className="wire-dialog" aria-labelledby="information-title">
         <h2 id="information-title">{topic}</h2>
-        <p>掲載内容は未設定です。ワイヤープロトタイプの仮リンクです。</p>
+        <p>{topic === 'Credits'
+          ? '人物画像はAI生成を使用しています。ロゴは仮の文字表記です。正式なクレジットは制作中です。'
+          : topic === 'Privacy'
+            ? 'このデザインプレビューは固定返信です。入力を外部のAIへ送信せず、会話はページを閉じると消えます。個人情報は入力しないでください。'
+            : '小鳥遊ももか公式サイトの卒業制作・デザイン確認版です。実際のAI会話や活動実績を示すものではありません。'}</p>
         <form method="dialog"><button type="submit">閉じる</button></form>
       </dialog>
     </>

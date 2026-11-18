@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
-import { Placeholder } from '../components/Wireframe'
+import momokaPortrait from '../assets/momoka-approved.webp'
 
 type Message = { id: number; role: 'character' | 'user'; text: string }
 type TalkMode = 'intro' | 'conversation'
@@ -73,10 +73,14 @@ export function TalkPage() {
       <section className="character-stage" aria-label="キャラクター表示エリア">
         {mode === 'intro' && (
           <div className="character-copy">
+            <p className="character-name">小鳥遊ももか<span>TAKANASHI MOMOKA</span></p>
             <p className="character-greeting">少し、話していく？</p>
           </div>
         )}
-        <Placeholder label="CHARACTER PLACEHOLDER" className="character-placeholder" />
+        <span className="hero-orbit hero-orbit-one" aria-hidden="true" />
+        <span className="hero-orbit hero-orbit-two" aria-hidden="true" />
+        <img className="momoka-portrait" src={momokaPortrait} width="580" height="790"
+          alt="ピンクの髪と輪のアホ毛、緑の服の小鳥遊ももか" fetchPriority="high" />
       </section>
 
       {mode === 'intro' ? (
@@ -87,12 +91,12 @@ export function TalkPage() {
             ))}
           </div>
           {composer}
-          <p className="wire-note">ワイヤーフレーム確認用。ここでは実際のAIへ送信しません。</p>
+          <p className="wire-note">デザイン確認用 · 固定返信です。実際のAIには送信しません。</p>
         </section>
       ) : (
         <section className="conversation-panel" aria-labelledby="conversation-title">
           <header className="conversation-heading">
-            <div><span className="wire-label">SESSION ONLY</span><h2 id="conversation-title">CONVERSATION</h2></div>
+            <div><span className="wire-label">DESIGN PREVIEW · 固定返信</span><h2 id="conversation-title">ももかと話す</h2></div>
             <button type="button" className="reset-talk" onClick={resetTalk}>最初の画面へ</button>
           </header>
           <div ref={history} className="conversation-log conversation-history" role="log" aria-label="会話履歴" aria-live="polite" aria-relevant="additions" tabIndex={0}>
