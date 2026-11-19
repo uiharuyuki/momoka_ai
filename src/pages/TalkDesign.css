@@ -408,6 +408,17 @@ html:has(body.talk-is-open) { scrollbar-gutter: auto; }
   .talk-page-intro .intro-composer { width: 40%; right: 5%; bottom: 12%; }
   .site-shell-talk:has(.talk-page) > .site-header { height: 48px; }
 }
+@media (max-width: 720px) {
+  .talk-page-intro:has(.intro-composer:focus-within, .intro-feedback:not([hidden])) .character-stage {
+    inset-block: var(--visible-top-gap, 0px) var(--visible-bottom-gap, 0px);
+  }
+  .talk-page-intro .intro-composer:is(:focus-within, :has(.intro-feedback:not([hidden]))) {
+    right: 3%; width: 94%; bottom: calc(var(--visible-bottom-gap, 0px) + 6px);
+  }
+  .intro-composer .intro-feedback {
+    top: auto; bottom: calc(100% + 3px); right: 8px;
+  }
+}
 @media (max-width: 720px), (max-width: 960px) and (max-height: 520px) and (pointer: coarse) {
   .hero-topics {
     --slot-step: clamp(2px, .85dvh, 7px);
