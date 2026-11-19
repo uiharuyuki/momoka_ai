@@ -7,6 +7,8 @@ type TalkMode = 'intro' | 'conversation'
 
 const starters = ['自己紹介して', 'どんな活動をするの？', '少し話したい']
 const mockReply = 'これはレイアウト確認用の固定返信です。実際のAIには送信していません。'
+const INPUT_LIMIT = 100
+function countInput(text: string) { return Array.from(text.trim()).length }
 
 export function TalkPage() {
   const [mode, setMode] = useState<TalkMode>('intro')
@@ -25,7 +27,7 @@ export function TalkPage() {
 
   function submitText(text: string) {
     const normalized = text.trim()
-    if (!normalized || composing.current || replyPending) return
+    if (!normalized || countInput(text) > INPUT_LIMIT || composing.current || replyPending) return
 
     const userId = nextId.current++
     const answerId = nextId.current++
@@ -52,9 +54,11 @@ export function TalkPage() {
   }
 
   const composer = (
+    <>
     <form className="message-form" onSubmit={sendMessage}>
-      <label className="visually-hidden" htmlFor="message-input">メッセージ</label>
-      <input ref={textInput} id="message-input" name="message" value={input} maxLength={400}
+      <label className="visually-hidden" htmlFor="message-input">メッセージ（100文字まで）</label>
+      <input ref={textInput} id="message-input" name="message" value={input}
+        aria-describedby="input-limit" aria-invalid={countInput(input) > INPUT_LIMIT}
         placeholder="ももかにメッセージを入力" autoComplete="off"
         onChange={(event) => setInput(event.target.value)}
         onCompositionStart={() => { composing.current = true }}
@@ -62,10 +66,14 @@ export function TalkPage() {
         onKeyDown={(event) => {
           if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.keyCode === 229)) event.preventDefault()
         }} />
-      <button type="submit" aria-label="送信" disabled={!input.trim() || replyPending}>
+      <button type="submit" aria-label="送信" disabled={!input.trim() || countInput(input) > INPUT_LIMIT || replyPending}>
         <span className="send-icon" aria-hidden="true">➤</span>
       </button>
     </form>
+    <p id="input-limit" className="wire-note" aria-live="polite">
+      {countInput(input)} / 100文字{countInput(input) > INPUT_LIMIT ? ' — 100文字以内に短くしてね。' : ''}
+    </p>
+    </>
   )
 
   return (
