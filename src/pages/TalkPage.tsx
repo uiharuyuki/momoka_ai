@@ -9,7 +9,7 @@ import sendArrow from '../assets/send-arrow.svg'
 
 type Message = { id: number; role: 'character' | 'user'; text: string }
 type TalkMode = 'intro' | 'conversation'
-export type PortraitMode = 'neutral' | 'tapioca'
+export type PortraitMode = 'auto' | 'neutral' | 'tapioca'
 type EyeState = 'open' | 'half' | 'closed'
 
 const neutralReply = 'デモ用の固定返信だよ。今日は商店街を歩いていたよ。'
@@ -115,13 +115,16 @@ function TopicSuggestions({ onChoose }: { onChoose: (question: string) => void }
   )
 }
 
-export function TalkPage({ portraitMode }: { portraitMode: PortraitMode }) {
+export function TalkPage({ portraitMode: preference }: { portraitMode: PortraitMode }) {
   const [mode, setMode] = useState<TalkMode>('intro')
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [replyPending, setReplyPending] = useState(false)
   const [eyeState, setEyeState] = useState<EyeState>('open')
   const [smile, setSmile] = useState(false)
+  const [sipping, setSipping] = useState(false)
+  const cupImage = useRef<HTMLImageElement>(null)
+  const portraitMode = preference === 'tapioca' || (preference === 'auto' && sipping) ? 'tapioca' : 'neutral'
   const portraitModeRef = useRef<PortraitMode>(portraitMode)
   useLayoutEffect(() => { portraitModeRef.current = portraitMode }, [portraitMode])
   const scene = useRef<HTMLElement>(null)
@@ -152,8 +155,9 @@ export function TalkPage({ portraitMode }: { portraitMode: PortraitMode }) {
         smileTimer.current = null
       }
       setSmile(false)
+      setSipping(false)
     }
-    const allowed = () => !cancelled && portraitMode === 'neutral' && !document.hidden && !reducedMotion.matches
+    const allowed = () => !cancelled && preference !== 'tapioca' && !document.hidden && !reducedMotion.matches
     const later = (callback: () => void, delay: number) => {
       const timer = window.setTimeout(() => {
         timers.delete(timer)
@@ -185,9 +189,21 @@ export function TalkPage({ portraitMode }: { portraitMode: PortraitMode }) {
         }, 1000 + Math.random() * 1000)
       }, 20000 + Math.random() * 20000)
     }
+    const takeSip = () => {
+      if (!cupImage.current?.naturalWidth || smileTimer.current !== null) {
+        later(takeSip, 3000)
+        return
+      }
+      setSipping(true)
+      later(() => {
+        setSipping(false)
+        later(takeSip, 16000 + Math.random() * 8000)
+      }, 3600)
+    }
     const sync = () => {
       clearTimers(); neutralize()
       if (allowed()) { scheduleBlink(); scheduleIdle() }
+      if (allowed() && preference === 'auto') later(takeSip, 7000)
     }
     document.addEventListener('visibilitychange', sync)
     reducedMotion.addEventListener('change', sync)
@@ -198,7 +214,7 @@ export function TalkPage({ portraitMode }: { portraitMode: PortraitMode }) {
       document.removeEventListener('visibilitychange', sync)
       reducedMotion.removeEventListener('change', sync)
     }
-  }, [portraitMode])
+  }, [preference])
 
   useEffect(() => () => {
     if (replyTimer.current !== null) window.clearTimeout(replyTimer.current)
@@ -336,13 +352,15 @@ export function TalkPage({ portraitMode }: { portraitMode: PortraitMode }) {
       <section className="character-stage" aria-label="キャラクター表示エリア">
         <div className="portrait-depth">
           <div className="portrait-stack" data-portrait-mode={portraitMode} data-eye-state={eyeState} data-smile={smile}>
-            <img className="momoka-portrait" src={portraitMode === 'tapioca' ? momokaTapioca : momokaNeutral} width="1024" height="1536"
-              alt={portraitMode === 'tapioca' ? 'タピオカミルクティーをストローで飲む小鳥遊ももか' : '商店街で振り向く小鳥遊ももか'} fetchPriority="high" />
-            {portraitMode === 'neutral' && <>
+            <div className="portrait-empty-handed">
+              <img className="momoka-portrait" src={momokaNeutral} width="1024" height="1536"
+                alt={portraitMode === 'neutral' ? '商店街で振り向く小鳥遊ももか' : ''} fetchPriority="high" />
               <img className="portrait-layer portrait-eyes eyes-half" src={eyesHalf} width="1024" height="1536" alt="" />
               <img className="portrait-layer portrait-eyes eyes-closed" src={eyesClosed} width="1024" height="1536" alt="" />
               <img className="portrait-layer portrait-mouth" src={mouthSmile} width="1024" height="1536" alt="" />
-            </>}
+            </div>
+            <img ref={cupImage} className="portrait-layer portrait-with-cup" src={momokaTapioca} width="1024" height="1536"
+              alt={portraitMode === 'tapioca' ? 'タピオカミルクティーをストローで飲む小鳥遊ももか' : ''} />
           </div>
         </div>
         {mode === 'intro' && <TopicSuggestions onChoose={chooseTopic} />}

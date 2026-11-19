@@ -281,12 +281,18 @@ html:has(body.talk-is-open) { scrollbar-gutter: auto; }
 }
 .talk-page .momoka-portrait { display: block; width: 100%; height: auto; }
 .portrait-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.portrait-empty-handed { position: relative; }
+.portrait-with-cup { opacity: 0; mix-blend-mode: plus-lighter; }
+.portrait-stack { isolation: isolate; }
+.portrait-stack[data-portrait-mode="tapioca"] .portrait-empty-handed { opacity: 0; }
+.portrait-stack[data-portrait-mode="tapioca"] .portrait-with-cup { opacity: 1; }
 .portrait-eyes { visibility: hidden; }
 .portrait-mouth { opacity: 0; }
 .portrait-stack[data-eye-state="half"] .eyes-half,
 .portrait-stack[data-eye-state="closed"] .eyes-closed { visibility: visible; }
 .portrait-stack[data-smile="true"] .portrait-mouth { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
+  .portrait-empty-handed, .portrait-with-cup { transition: opacity 220ms ease-in-out; }
   .portrait-mouth { transition: opacity 120ms ease-out; }
 }
 .hero-topics {

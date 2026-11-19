@@ -11,9 +11,10 @@ function App() {
   const [info, setInfo] = useState<InfoTopic | 'サイト情報' | null>(null)
   const [portraitMode, setPortraitMode] = useState<PortraitMode>(() => {
     try {
-      return localStorage.getItem('momoka-portrait-mode') === 'tapioca' ? 'tapioca' : 'neutral'
+      const saved = localStorage.getItem('momoka-portrait-mode')
+      return saved === 'neutral' || saved === 'tapioca' ? saved : 'auto'
     } catch {
-      return 'neutral'
+      return 'auto'
     }
   })
   function choosePortrait(value: PortraitMode) {

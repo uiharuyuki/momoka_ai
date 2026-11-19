@@ -97,7 +97,7 @@ export function InformationDialog({ topic, choose, close, portraitMode, choosePo
         <h2 id="information-title">{topic}</h2>
         {topic === 'サイト情報' && <div className="portrait-choices" role="group" aria-label="立ち絵の飲み物">
           <span>立ち絵</span>
-          {([['neutral', 'タピオカなし'], ['tapioca', 'タピオカあり']] as const).map(([value, label]) => <button type="button" key={value}
+          {([['auto', '自動'], ['neutral', 'タピオカなし'], ['tapioca', 'タピオカあり']] as const).map(([value, label]) => <button type="button" key={value}
             aria-pressed={portraitMode === value}
             onClick={() => choosePortrait(value)}>
             {label}
