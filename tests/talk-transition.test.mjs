@@ -10,7 +10,7 @@ const vite = readFileSync(new URL('../vite.config.ts', import.meta.url), 'utf8')
 test('Talk starts character-first and transitions once into the conversation layout', () => {
   assert.match(talk, /useState<TalkMode>\('intro'\)/)
   assert.match(talk, /setMode\('conversation'\)/)
-  assert.match(talk, /レイアウト確認用の固定返信/)
+  assert.match(talk, /デモ用の固定返信/)
   assert.doesNotMatch(talk, /fetch\s*\(/)
 })
 

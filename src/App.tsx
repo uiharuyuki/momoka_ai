@@ -1,6 +1,6 @@
-﻿import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
-import { Footer, Header } from './components/Wireframe'
+import { Footer, Header, InformationDialog, type InfoTopic } from './components/Wireframe'
 import { navigation } from './navigation'
 import { ActivitiesPage, GoodsPage, NotFoundPage, ProfilePage, VoicePage } from './pages/ContentPages'
 import { TalkPage } from './pages/TalkPage'
@@ -8,6 +8,7 @@ import './App.css'
 import './pages/TalkDesign.css'
 
 function App() {
+  const [info, setInfo] = useState<InfoTopic | 'サイト情報' | null>(null)
   const { pathname } = useLocation()
   const isTalk = pathname === '/'
 
@@ -15,6 +16,7 @@ function App() {
     document.body.classList.toggle('talk-is-open', isTalk)
     const title = navigation.find((item) => item.path === pathname)?.label ?? 'Not found'
     document.title = `${title} | 小鳥遊ももか デザインプレビュー`
+    document.getElementById('root')?.scrollTo(0, 0)
     window.scrollTo(0, 0)
     return () => document.body.classList.remove('talk-is-open')
   }, [isTalk, pathname])
@@ -22,7 +24,7 @@ function App() {
   return (
     <div className={`site-shell ${isTalk ? 'site-shell-talk' : ''}`}>
       <a className="skip-link" href="#main-content">本文へ移動</a>
-      <Header />
+      <Header onInfo={() => setInfo('サイト情報')} />
       <Routes>
         <Route path="/" element={<TalkPage />} />
         <Route path="/profile" element={<ProfilePage />} />
@@ -31,7 +33,8 @@ function App() {
         <Route path="/goods" element={<GoodsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      <Footer />
+      <Footer onInfo={setInfo} />
+      {info && <InformationDialog topic={info} choose={setInfo} close={() => setInfo(null)} />}
     </div>
   )
 }

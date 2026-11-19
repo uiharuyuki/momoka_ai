@@ -9,20 +9,20 @@ const talk = readFileSync(new URL('../src/pages/TalkPage.tsx', import.meta.url),
 
 test('shared navigation follows the generated comp shape on desktop and mobile', () => {
   assert.match(wireframe, /className="brand-wordmark"/)
-  assert.match(wireframe, /className="navigation-icon"/)
-  assert.match(app, /\.logo-placeholder[^}]*border:\s*0[^}]*background:\s*transparent/s)
-  assert.match(app, /@media\s*\(max-width:\s*720px\)[\s\S]*\.site-header nav[^}]*position:\s*fixed[^}]*bottom:\s*0/s)
-  assert.match(app, /@media\s*\(max-width:\s*720px\)[\s\S]*\.navigation[^}]*grid-template-columns:\s*repeat\(5,\s*minmax\(0,\s*1fr\)\)/s)
+  assert.match(wireframe, /aria-controls="mobile-navigation"/)
+  assert.match(wireframe, /showModal\(\)/)
+  assert.match(app, /\.site-header > nav, \.site-header > \.site-info \{ display: none; \}/)
+  assert.match(app, /\.menu-trigger\s*\{[^}]*position: fixed;[^}]*top:/s)
 })
 
 test('the root reserves a stable scrollbar gutter so Talk and content pages do not shift', () => {
   assert.match(base, /html\s*\{[^}]*overflow-y:\s*auto[^}]*scrollbar-gutter:\s*stable/s)
 })
 
-test('Talk intro keeps one clear heading and desktop tabs breathe away from the right edge', () => {
+test('Talk intro keeps one clear heading and desktop tabs sit flush with the top-right corner', () => {
   assert.doesNotMatch(talk, /<p className="wire-label">AI VTUBER \/ TALK<\/p>/)
-  assert.match(app, /\.site-header nav[^}]*margin-right:\s*clamp\(18px,\s*2\.5vw,\s*40px\)/s)
-  assert.match(app, /@media\s*\(max-width:\s*720px\)[\s\S]*\.site-header nav[^}]*margin-right:\s*0/s)
+  const design = readFileSync(new URL('../src/pages/TalkDesign.css', import.meta.url), 'utf8')
+  assert.match(design, /\.site-header > nav\s*\{[^}]*position: fixed;\s*top: 0;\s*right: 0;\s*margin: 0;/s)
 })
 
 test('Talk geometry uses the slimmer production-sized composer and rounded chat surfaces', () => {
