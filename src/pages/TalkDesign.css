@@ -140,3 +140,13 @@
   .talk-page-conversation { min-height: 470px; }
   .conversation-history { max-height: 220px; }
 }
+
+/* Decorative café wave belongs only to the Talk intro stage. */
+.cafe-wave { position: absolute; z-index: 2; inset: auto 0 -1px; display: block; width: 100%; height: clamp(82px, 15vh, 164px); overflow: visible; pointer-events: none; }
+.cafe-wave-shadow { fill: #d9ad9c; opacity: .25; transform: translateY(5px); }
+.cafe-wave-fill { fill: #f3d9c8; opacity: .94; }
+.cafe-wave-glint { fill: none; stroke: #fff8ed; stroke-width: 4; stroke-linecap: round; opacity: .9; animation: cafe-wave-drift 5.5s ease-in-out infinite alternate; }
+@keyframes cafe-wave-drift { from { transform: translateX(-9px) translateY(1px); } to { transform: translateX(9px) translateY(-3px); } }
+.talk-page-intro .intro-composer { position: relative; z-index: 3; }
+.talk-page-intro .starter-list button { box-shadow: 0 3px 12px rgb(111 74 57 / 10%); }
+@media (prefers-reduced-motion: reduce) { .cafe-wave-glint { animation: none; } }

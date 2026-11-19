@@ -83,6 +83,13 @@ export function TalkPage() {
       <section className="character-stage" aria-label="キャラクター表示エリア">
         <img className="momoka-portrait" src={momokaPortrait} width="580" height="790"
           alt="ピンクの髪と輪のアホ毛、緑の服の小鳥遊ももか" fetchPriority="high" />
+        {mode === 'intro' && (
+          <svg className="cafe-wave" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path className="cafe-wave-shadow" d="M0 82 C180 20 290 150 480 86 C670 22 790 126 970 76 C1150 26 1290 125 1440 54 V180 H0Z" />
+            <path className="cafe-wave-fill" d="M0 72 C180 10 290 140 480 76 C670 12 790 116 970 66 C1150 16 1290 115 1440 44 V180 H0Z" />
+            <path className="cafe-wave-glint" d="M0 72 C180 10 290 140 480 76 C670 12 790 116 970 66 C1150 16 1290 115 1440 44" />
+          </svg>
+        )}
       </section>
 
       {mode === 'intro' ? (
