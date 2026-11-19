@@ -12,6 +12,7 @@ export function TalkPage() {
   const [mode, setMode] = useState<TalkMode>('intro')
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
+  const [replyPending, setReplyPending] = useState(false)
   const history = useRef<HTMLDivElement>(null)
   const textInput = useRef<HTMLInputElement>(null)
   const composing = useRef(false)
@@ -24,18 +25,19 @@ export function TalkPage() {
 
   function submitText(text: string) {
     const normalized = text.trim()
-    if (!normalized || composing.current) return
+    if (!normalized || composing.current || replyPending) return
 
     const userId = nextId.current++
     const answerId = nextId.current++
-    setMessages((previous) => [
-      ...previous,
-      { id: userId, role: 'user', text: normalized },
-      { id: answerId, role: 'character', text: mockReply },
-    ])
+    setMessages((previous) => [...previous, { id: userId, role: 'user', text: normalized }])
+    setReplyPending(true)
     setInput('')
     setMode('conversation')
-    window.setTimeout(() => textInput.current?.focus(), 350)
+    window.setTimeout(() => {
+      setMessages((previous) => [...previous, { id: answerId, role: 'character', text: mockReply }])
+      setReplyPending(false)
+      textInput.current?.focus()
+    }, 650)
   }
 
   function sendMessage(event: FormEvent<HTMLFormElement>) {
@@ -60,7 +62,7 @@ export function TalkPage() {
         onKeyDown={(event) => {
           if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.keyCode === 229)) event.preventDefault()
         }} />
-      <button type="submit" aria-label="送信" disabled={!input.trim()}>
+      <button type="submit" aria-label="送信" disabled={!input.trim() || replyPending}>
         <span className="send-icon" aria-hidden="true">➤</span>
       </button>
     </form>
@@ -109,6 +111,15 @@ export function TalkPage() {
                 </div>
               </article>
             ))}
+            {replyPending && (
+              <article className="message message-character message-typing" aria-label="ももかが返信中">
+                <span className="message-avatar" aria-hidden="true" />
+                <div className="message-content">
+                  <span className="message-author">小鳥遊ももか（モック）</span>
+                  <p className="typing-dots" aria-hidden="true"><span>•</span><span>•</span><span>•</span></p>
+                </div>
+              </article>
+            )}
           </div>
           {composer}
         </section>
