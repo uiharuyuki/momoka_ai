@@ -173,6 +173,10 @@
 }
 .info-topics { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
 .info-topics button[aria-pressed="true"] { border-color: var(--rose); background: #fae7e9; }
+.portrait-choices { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 14px 0; }
+.portrait-choices span { flex-basis: 100%; color: var(--muted); font-size: 12px; }
+.portrait-choices button { min-height: 44px; padding: 4px 12px; font-size: 13px; }
+.portrait-choices button[aria-pressed="true"] { border-color: var(--rose); background: #fae7e9; color: #702543; }
 @media (max-width: 720px) {
   .site-shell-talk .site-header { grid-template-columns: minmax(0, 1fr) 44px; }
 }
@@ -266,7 +270,7 @@ html:has(body.talk-is-open) { scrollbar-gutter: auto; }
   animation: none; transform-origin: 45% 28%;
 }
 .portrait-depth { position: absolute; inset: 0; }
-.talk-page .momoka-portrait {
+.talk-page .portrait-stack {
   /* Anchor the painted eye midpoint at 64.1% × 23.2% of the uncropped portrait. */
   position: absolute; left: 45.2%; top: 27.5%;
   width: min(44vw, 77dvh); max-width: none; height: auto;
@@ -274,6 +278,16 @@ html:has(body.talk-is-open) { scrollbar-gutter: auto; }
   min-width: 64dvh;
   transform-origin: 64.1% 23.2%;
   transform: translate(-64.1%, -23.2%);
+}
+.talk-page .momoka-portrait { display: block; width: 100%; height: auto; }
+.portrait-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.portrait-eyes { visibility: hidden; }
+.portrait-mouth { opacity: 0; }
+.portrait-stack[data-eye-state="half"] .eyes-half,
+.portrait-stack[data-eye-state="closed"] .eyes-closed { visibility: visible; }
+.portrait-stack[data-smile="true"] .portrait-mouth { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .portrait-mouth { transition: opacity 120ms ease-out; }
 }
 .hero-topics {
   --portrait-span: max(64dvh, min(44vw, 77dvh));
@@ -376,7 +390,7 @@ html:has(body.talk-is-open) { scrollbar-gutter: auto; }
   .talk-page::after {
     background: linear-gradient(180deg, #fff5ebed 0, #fff5ebcb 78px, transparent 145px), rgb(255 231 218 / 18%);
   }
-  .talk-page .momoka-portrait {
+  .talk-page .portrait-stack {
     left: 29.5%; top: max(34%, 160px); width: min(139vw, 76dvh); min-width: 58dvh;
     transform: translate(-64.1%, -23.2%);
   }
@@ -384,7 +398,7 @@ html:has(body.talk-is-open) { scrollbar-gutter: auto; }
   .talk-page-intro .message-form { --send-size: 44px; }
 }
 @media (max-height: 520px) and (orientation: landscape) {
-  .talk-page .momoka-portrait { width: 82dvh; top: 28%; }
+  .talk-page .portrait-stack { width: 82dvh; top: 28%; }
   .talk-page-intro .intro-composer { width: 40%; right: 5%; bottom: 12%; }
   .site-shell-talk:has(.talk-page) > .site-header { height: 48px; }
 }
@@ -459,7 +473,7 @@ html:has(body.talk-is-open) { scrollbar-gutter: auto; }
     translate: calc(16px * var(--look-x, 0)) calc(5px * var(--look-y, 0));
     transition: translate 520ms cubic-bezier(.2, .65, .25, 1);
   }
-  .talk-page .momoka-portrait {
+  .talk-page .portrait-stack {
     transform-origin: 54% 74%;
     animation: momoka-breathe 5.8s ease-in-out infinite;
   }

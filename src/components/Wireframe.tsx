@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { navigation } from '../navigation'
+import type { PortraitMode } from '../pages/TalkPage'
 
 function NavigationLinks({ mobile, onSelect, children }: { mobile?: boolean; onSelect?: () => void; children?: ReactNode }) {
   return (
@@ -82,16 +83,26 @@ export function Footer({ onInfo }: { onInfo: (topic: InfoTopic) => void }) {
   )
 }
 
-export function InformationDialog({ topic, choose, close }: {
+export function InformationDialog({ topic, choose, close, portraitMode, choosePortrait }: {
   topic: InfoTopic | 'サイト情報'
   choose: (topic: InfoTopic) => void
   close: () => void
+  portraitMode: PortraitMode
+  choosePortrait: (mode: PortraitMode) => void
 }) {
 
   return (
       <dialog ref={node => { if (node && !node.open) node.showModal() }}
         onClose={close} className="wire-dialog" aria-labelledby="information-title">
         <h2 id="information-title">{topic}</h2>
+        {topic === 'サイト情報' && <div className="portrait-choices" role="group" aria-label="立ち絵の飲み物">
+          <span>立ち絵</span>
+          {([['neutral', 'タピオカなし'], ['tapioca', 'タピオカあり']] as const).map(([value, label]) => <button type="button" key={value}
+            aria-pressed={portraitMode === value}
+            onClick={() => choosePortrait(value)}>
+            {label}
+          </button>)}
+        </div>}
         <div className="info-topics">{infoTopics.map(label =>
           <button type="button" key={label} aria-pressed={topic === label} onClick={() => choose(label)}>{label}</button>
         )}</div>

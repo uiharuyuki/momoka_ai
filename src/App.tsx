@@ -3,12 +3,23 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import { Footer, Header, InformationDialog, type InfoTopic } from './components/Wireframe'
 import { navigation } from './navigation'
 import { ActivitiesPage, GoodsPage, NotFoundPage, ProfilePage, VoicePage } from './pages/ContentPages'
-import { TalkPage } from './pages/TalkPage'
+import { TalkPage, type PortraitMode } from './pages/TalkPage'
 import './App.css'
 import './pages/TalkDesign.css'
 
 function App() {
   const [info, setInfo] = useState<InfoTopic | 'サイト情報' | null>(null)
+  const [portraitMode, setPortraitMode] = useState<PortraitMode>(() => {
+    try {
+      return localStorage.getItem('momoka-portrait-mode') === 'tapioca' ? 'tapioca' : 'neutral'
+    } catch {
+      return 'neutral'
+    }
+  })
+  function choosePortrait(value: PortraitMode) {
+    setPortraitMode(value)
+    try { localStorage.setItem('momoka-portrait-mode', value) } catch { /* Keep the choice for this visit. */ }
+  }
   const { pathname } = useLocation()
   const isTalk = pathname === '/'
 
@@ -26,7 +37,7 @@ function App() {
       <a className="skip-link" href="#main-content">本文へ移動</a>
       <Header onInfo={() => setInfo('サイト情報')} />
       <Routes>
-        <Route path="/" element={<TalkPage />} />
+        <Route path="/" element={<TalkPage portraitMode={portraitMode} />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/activities" element={<ActivitiesPage />} />
         <Route path="/voice" element={<VoicePage />} />
@@ -34,7 +45,8 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer onInfo={setInfo} />
-      {info && <InformationDialog topic={info} choose={setInfo} close={() => setInfo(null)} />}
+      {info && <InformationDialog topic={info} choose={setInfo} close={() => setInfo(null)}
+        portraitMode={portraitMode} choosePortrait={choosePortrait} />}
     </div>
   )
 }

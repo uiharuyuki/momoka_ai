@@ -1,12 +1,19 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties, FormEvent } from 'react'
-import momokaPortrait from '../assets/momoka-tapioca.webp'
+import momokaNeutral from '../assets/momoka-neutral.webp'
+import momokaTapioca from '../assets/momoka-tapioca.webp'
+import eyesHalf from '../assets/momoka-eyes-half.webp'
+import eyesClosed from '../assets/momoka-eyes-closed.webp'
+import mouthSmile from '../assets/momoka-mouth-smile.webp'
 import sendArrow from '../assets/send-arrow.svg'
 
 type Message = { id: number; role: 'character' | 'user'; text: string }
 type TalkMode = 'intro' | 'conversation'
+export type PortraitMode = 'neutral' | 'tapioca'
+type EyeState = 'open' | 'half' | 'closed'
 
-const mockReply = 'デモ用の固定返信だよ。今日はタピオカミルクティーにしたよ。'
+const neutralReply = 'デモ用の固定返信だよ。今日は商店街を歩いていたよ。'
+const tapiocaReply = 'デモ用の固定返信だよ。今日はタピオカミルクティーにしたよ。'
 const INPUT_LIMIT = 100
 function countInput(text: string) { return Array.from(text.trim()).length }
 
@@ -50,7 +57,7 @@ function BubbleOutline({ slot }: { slot: number }) {
     const aim = () => {
       const body = button.getBoundingClientRect()
       const art = portrait.getBoundingClientRect()
-      // The straw meets the mouth at this point in the transparent portrait.
+      // Both portraits share the same mouth anchor on their transparent canvas.
       const mouthX = art.left + art.width * .68
       const mouthY = art.top + art.height * .295
       const edge = mouthX < body.left + body.width / 2 ? body.left : body.right
@@ -108,16 +115,95 @@ function TopicSuggestions({ onChoose }: { onChoose: (question: string) => void }
   )
 }
 
-export function TalkPage() {
+export function TalkPage({ portraitMode }: { portraitMode: PortraitMode }) {
   const [mode, setMode] = useState<TalkMode>('intro')
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [replyPending, setReplyPending] = useState(false)
+  const [eyeState, setEyeState] = useState<EyeState>('open')
+  const [smile, setSmile] = useState(false)
+  const portraitModeRef = useRef<PortraitMode>(portraitMode)
+  useLayoutEffect(() => { portraitModeRef.current = portraitMode }, [portraitMode])
   const scene = useRef<HTMLElement>(null)
   const history = useRef<HTMLDivElement>(null)
   const textInput = useRef<HTMLInputElement>(null)
   const composing = useRef(false)
   const nextId = useRef(1)
+  const replyTimer = useRef<number | null>(null)
+  const smileTimer = useRef<number | null>(null)
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const timers = new Set<number>()
+    let cancelled = false
+    let blinkPhase: EyeState = 'open'
+    let idleActive = false
+    const clearTimers = () => {
+      timers.forEach(timer => window.clearTimeout(timer))
+      timers.clear()
+    }
+    const applyEyes = () => setEyeState(blinkPhase === 'open' && idleActive ? 'half' : blinkPhase)
+    const neutralize = () => {
+      blinkPhase = 'open'
+      idleActive = false
+      applyEyes()
+      if (smileTimer.current !== null) {
+        window.clearTimeout(smileTimer.current)
+        smileTimer.current = null
+      }
+      setSmile(false)
+    }
+    const allowed = () => !cancelled && portraitMode === 'neutral' && !document.hidden && !reducedMotion.matches
+    const later = (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(() => {
+        timers.delete(timer)
+        if (allowed()) callback()
+      }, delay)
+      timers.add(timer)
+    }
+    const scheduleBlink = () => {
+      later(() => {
+        blinkPhase = 'half'
+        applyEyes()
+        later(() => { blinkPhase = 'closed'; applyEyes() }, 45)
+        later(() => { blinkPhase = 'half'; applyEyes() }, 130)
+        later(() => {
+          blinkPhase = 'open'
+          applyEyes()
+          scheduleBlink()
+        }, 180)
+      }, 4000 + Math.random() * 4000)
+    }
+    const scheduleIdle = () => {
+      later(() => {
+        idleActive = true
+        applyEyes()
+        later(() => {
+          idleActive = false
+          applyEyes()
+          scheduleIdle()
+        }, 1000 + Math.random() * 1000)
+      }, 20000 + Math.random() * 20000)
+    }
+    const sync = () => {
+      clearTimers(); neutralize()
+      if (allowed()) { scheduleBlink(); scheduleIdle() }
+    }
+    document.addEventListener('visibilitychange', sync)
+    reducedMotion.addEventListener('change', sync)
+    sync()
+    return () => {
+      cancelled = true
+      clearTimers()
+      document.removeEventListener('visibilitychange', sync)
+      reducedMotion.removeEventListener('change', sync)
+    }
+  }, [portraitMode])
+
+  useEffect(() => () => {
+    if (replyTimer.current !== null) window.clearTimeout(replyTimer.current)
+    if (smileTimer.current !== null) window.clearTimeout(smileTimer.current)
+  }, [])
 
   useEffect(() => {
     const stage = scene.current
@@ -171,8 +257,16 @@ export function TalkPage() {
     setReplyPending(true)
     setInput('')
     setMode('conversation')
-    window.setTimeout(() => {
+    if (replyTimer.current !== null) window.clearTimeout(replyTimer.current)
+    replyTimer.current = window.setTimeout(() => {
+      const mockReply = portraitModeRef.current === 'tapioca' ? tapiocaReply : neutralReply
       setMessages((previous) => [...previous, { id: answerId, role: 'character', text: mockReply }])
+      replyTimer.current = null
+      if (portraitModeRef.current === 'neutral' && !document.hidden && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (smileTimer.current !== null) window.clearTimeout(smileTimer.current)
+        setSmile(true)
+        smileTimer.current = window.setTimeout(() => { smileTimer.current = null; setSmile(false) }, 2200)
+      }
       setReplyPending(false)
       textInput.current?.focus()
     }, 650)
@@ -202,6 +296,9 @@ export function TalkPage() {
     setMode('intro')
     setMessages([])
     setInput('')
+    setEyeState('open')
+    setSmile(false)
+    if (smileTimer.current !== null) { window.clearTimeout(smileTimer.current); smileTimer.current = null }
   }
 
   const inputCount = countInput(input)
@@ -238,8 +335,15 @@ export function TalkPage() {
 
       <section className="character-stage" aria-label="キャラクター表示エリア">
         <div className="portrait-depth">
-          <img className="momoka-portrait" src={momokaPortrait} width="1024" height="1536"
-            alt="タピオカミルクティーをストローで飲む小鳥遊ももか" fetchPriority="high" />
+          <div className="portrait-stack" data-portrait-mode={portraitMode} data-eye-state={eyeState} data-smile={smile}>
+            <img className="momoka-portrait" src={portraitMode === 'tapioca' ? momokaTapioca : momokaNeutral} width="1024" height="1536"
+              alt={portraitMode === 'tapioca' ? 'タピオカミルクティーをストローで飲む小鳥遊ももか' : '商店街で振り向く小鳥遊ももか'} fetchPriority="high" />
+            {portraitMode === 'neutral' && <>
+              <img className="portrait-layer portrait-eyes eyes-half" src={eyesHalf} width="1024" height="1536" alt="" />
+              <img className="portrait-layer portrait-eyes eyes-closed" src={eyesClosed} width="1024" height="1536" alt="" />
+              <img className="portrait-layer portrait-mouth" src={mouthSmile} width="1024" height="1536" alt="" />
+            </>}
+          </div>
         </div>
         {mode === 'intro' && <TopicSuggestions onChoose={chooseTopic} />}
       </section>
