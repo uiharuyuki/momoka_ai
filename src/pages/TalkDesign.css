@@ -1,14 +1,14 @@
 /* Visual layer only. Chat state and mock-only transport remain in TalkPage. */
 :root {
-  --paper: #fffaf9;
-  --wash: #fce8eb;
-  --placeholder: #f2d9df;
-  --line: #d4a0ad;
-  --ink: #593d32;
-  --muted: #805f5c;
+  --paper: #fffaf2;
+  --wash: #f8e8e2;
+  --placeholder: #f1ddd3;
+  --line: #c9a28e;
+  --ink: #59463b;
+  --muted: #786356;
   --rose: #b85c76;
   color: var(--ink);
-  background: #fff0f2;
+  background: #f8efe5;
   font-family: Arial, 'Noto Sans CJK JP', 'Yu Gothic', Meiryo, sans-serif;
 }
 .site-header { margin-inline: 28px; padding-inline: 10px; grid-template-columns: 330px minmax(0, 1fr); }
@@ -23,19 +23,8 @@
 .site-footer a + a { border-left: 1px solid var(--line); }
 .site-footer a { padding-inline: 28px; }
 .talk-page .character-stage { padding: 22px 0 0; overflow: hidden; isolation: isolate; }
-.character-stage::before { content: ''; position: absolute; z-index: -1; width: 73%; height: 86%; top: 10%; left: 13.5%; border-radius: 50%; background: #fce1e7; }
+.character-stage::before { content: ''; position: absolute; z-index: -1; width: min(54%, 650px); height: 94%; top: 6%; left: 50%; translate: -50% 0; border: 12px solid #f0d6c2; border-bottom: 0; border-radius: 50% 50% 0 0 / 30% 30% 0 0; background: linear-gradient(90deg, transparent 49.3%, #e8ccb8 49.3%, #e8ccb8 50.7%, transparent 50.7%), linear-gradient(180deg, transparent 34%, #e8ccb8 34%, #e8ccb8 35.5%, transparent 35.5%, transparent 68%, #e8ccb8 68%, #e8ccb8 69.5%, transparent 69.5%), linear-gradient(145deg, #fff4e9, #f9e8df 54%, #fff8ef); box-shadow: inset 0 0 0 8px rgb(255 250 243 / 72%); }
 .momoka-portrait { display: block; position: relative; z-index: 1; width: min(43%, 510px); height: 100%; object-fit: cover; object-position: center top; }
-.character-copy { z-index: 2; top: 34%; left: 0; translate: none; width: 100%; display: flex; align-items: center; justify-content: space-between; padding-inline: 5%; text-align: left; }
-.character-name { font-size: clamp(28px, 3.7vw, 58px); font-weight: 700; letter-spacing: .03em; line-height: 1.45; }
-.character-name span { display: block; margin-top: 18px; color: var(--muted); font-size: 10px; letter-spacing: .28em; font-weight: 400; }
-.character-greeting { position: relative; margin: 70px 0 0; padding-bottom: 16px; font-size: clamp(22px, 2.8vw, 42px); letter-spacing: .06em; font-weight: 500; white-space: nowrap; }
-.character-greeting::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 12px; border-top: 3px solid #eab0bf; border-radius: 50%; transform: rotate(-3deg); }
-.hero-orbit { position: absolute; width: 54px; height: 54px; border: 1px solid #d8a0af; border-radius: 50%; }
-.hero-orbit::after { content: ''; position: absolute; width: 14px; height: 14px; background: #bbc5a1; border-radius: 50%; }
-.hero-orbit-one { right: 17%; top: 9%; }
-.hero-orbit-one::after { right: -26px; bottom: -12px; }
-.hero-orbit-two { left: 15%; bottom: 18%; width: 38px; height: 38px; }
-.hero-orbit-two::after { left: -23px; top: -16px; }
 .intro-composer { width: min(1040px, calc(100% - 100px)); margin: 0 auto 16px; padding-top: 4px; }
 .starter-list { gap: 18px; margin-bottom: 16px; }
 .starter-list button { flex: 1; min-height: 48px; padding: 8px 20px; background: #fff8f8; border-color: #bd7a8d; font-size: 15px; }
@@ -62,8 +51,7 @@
 @keyframes talk-typing { 0%, 60%, 100% { opacity: .35; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
 .talk-page-conversation .character-stage { padding: 34px 0 0; }
 .talk-page-conversation .momoka-portrait { width: min(85%, 620px); }
-.talk-page-conversation .character-stage::before { width: 90%; left: 5%; }
-.talk-page-conversation .hero-orbit-one { right: 8%; }
+.talk-page-conversation .character-stage::before { width: 90%; left: 50%; translate: -50% 0; }
 @media (max-width: 1100px) and (min-width: 721px) {
   .site-header { grid-template-columns: 260px 1fr; gap: 12px; margin-inline: 16px; }
   .logo-placeholder { gap: 14px; }
@@ -86,17 +74,9 @@
   .navigation a.active { background: #f9dfe7; }
   .navigation a.active::after { display: none; }
   .navigation-icon { border-color: #c48b9c; }
-  .talk-page .character-stage { padding-top: 86px; }
-  .character-copy { top: 10px; display: block; padding: 0 12px; text-align: center; }
-  .character-name { font-size: 26px; line-height: 1.4; }
-  .character-name span { display: none; }
-  .character-greeting { display: inline-block; margin: 7px 0 0; padding-bottom: 6px; font-size: 17px; }
-  .character-greeting::after { height: 5px; border-width: 2px; }
+  .talk-page .character-stage { padding-top: 18px; }
   .momoka-portrait { width: min(94%, 390px); }
-  .character-stage::before { left: -8%; top: 27%; width: 116%; height: 70%; }
-  .hero-orbit-one { right: 9%; top: 29%; width: 30px; height: 30px; }
-  .hero-orbit-two { left: 8%; bottom: 13%; width: 23px; height: 23px; }
-  .hero-orbit::after { width: 9px; height: 9px; }
+  .character-stage::before { left: 50%; translate: -50% 0; top: 10%; width: min(86%, 340px); height: 80%; border-width: 8px; }
   .intro-composer { width: calc(100% - 32px); margin-bottom: 9px; }
   .starter-list { gap: 7px; margin-bottom: 10px; }
   .starter-list button { flex: 0 0 auto; min-height: 44px; padding: 7px 13px; font-size: 12px; }
@@ -105,8 +85,7 @@
   .talk-page-conversation { grid-template-rows: minmax(110px, 27dvh) minmax(0, 1fr); }
   .talk-page-conversation .character-stage { padding-top: 4px; }
   .talk-page-conversation .momoka-portrait { width: min(68%, 270px); }
-  .talk-page-conversation .character-stage::before { width: 80%; left: 10%; top: 7%; height: 140%; }
-  .talk-page-conversation .hero-orbit-two { display: none; }
+  .talk-page-conversation .character-stage::before { width: 80%; left: 50%; translate: -50% 0; top: 7%; height: 140%; }
   .conversation-heading { padding-inline: 12px; }
   .conversation-heading h2 { font-size: 15px; }
   .wire-label { font-size: 9px; }
@@ -114,11 +93,7 @@
   .reset-talk { padding-inline: 8px; font-size: 10px; }
 }
 @media (min-width: 721px) and (max-width: 1000px) {
-  .talk-page-intro .character-stage { padding-top: 108px; }
-  .talk-page-intro .character-copy { top: 16px; display: block; text-align: center; }
-  .talk-page-intro .character-name { font-size: clamp(28px, 3.6vw, 36px); }
-  .talk-page-intro .character-name span { display: none; }
-  .talk-page-intro .character-greeting { display: inline-block; margin-top: 8px; font-size: clamp(19px, 2.4vw, 24px); }
+  .talk-page-intro .character-stage { padding-top: 24px; }
   /* Keep the upper-body scale; contain would shrink the art with available height. */
   .talk-page-intro .momoka-portrait { width: min(64%, 510px); object-fit: cover; object-position: center top; }
   .goods-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

@@ -73,14 +73,6 @@ export function TalkPage() {
       <h1 className="visually-hidden">Talk</h1>
 
       <section className="character-stage" aria-label="キャラクター表示エリア">
-        {mode === 'intro' && (
-          <div className="character-copy">
-            <p className="character-name">小鳥遊ももか<span>TAKANASHI MOMOKA</span></p>
-            <p className="character-greeting">少し、話していく？</p>
-          </div>
-        )}
-        <span className="hero-orbit hero-orbit-one" aria-hidden="true" />
-        <span className="hero-orbit hero-orbit-two" aria-hidden="true" />
         <img className="momoka-portrait" src={momokaPortrait} width="580" height="790"
           alt="ピンクの髪と輪のアホ毛、緑の服の小鳥遊ももか" fetchPriority="high" />
       </section>
