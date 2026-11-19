@@ -26,11 +26,33 @@
 .character-stage::before { content: ''; position: absolute; z-index: -1; width: min(54%, 650px); height: 94%; top: 6%; left: 50%; translate: -50% 0; border: 12px solid #f0d6c2; border-bottom: 0; border-radius: 50% 50% 0 0 / 30% 30% 0 0; background: linear-gradient(90deg, transparent 49.3%, #e8ccb8 49.3%, #e8ccb8 50.7%, transparent 50.7%), linear-gradient(180deg, transparent 34%, #e8ccb8 34%, #e8ccb8 35.5%, transparent 35.5%, transparent 68%, #e8ccb8 68%, #e8ccb8 69.5%, transparent 69.5%), linear-gradient(145deg, #fff4e9, #f9e8df 54%, #fff8ef); box-shadow: inset 0 0 0 8px rgb(255 250 243 / 72%); }
 .momoka-portrait { display: block; position: relative; z-index: 1; width: min(43%, 510px); height: 100%; object-fit: cover; object-position: center top; }
 .intro-composer { width: min(1040px, calc(100% - 100px)); margin: 0 auto 16px; padding-top: 4px; }
-.starter-list { gap: 12px; margin-bottom: 12px; }
-.starter-list button { flex: 0 1 auto; width: fit-content; max-width: 100%; min-height: 48px; padding: 6px 18px; white-space: normal; overflow-wrap: anywhere; background: #fff8f8; border-color: #bd7a8d; font-size: 15px; line-height: 1.35; }
+.starter-list {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 8px;
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  padding: 0 2px 3px;
+}
+.starter-list button {
+  flex: 0 0 auto;
+  min-width: 44px;
+  min-height: 48px;
+  padding: 6px 14px;
+  white-space: nowrap;
+  background: #fff8f8;
+  border-color: #bd7a8d;
+  font-size: 15px;
+  line-height: 1.2;
+}
 @media (max-width: 720px) {
-  .starter-list { flex-wrap: wrap; align-items: flex-start; gap: 6px; margin-bottom: 8px; }
-  .starter-list button { flex: 0 1 auto; width: fit-content; min-height: 44px; padding: 5px 12px; font-size: 12px; line-height: 1.35; }
+  .starter-list { justify-content: flex-start; gap: 7px; margin-bottom: 8px; }
+  .starter-list button { min-height: 44px; padding: 5px 12px; font-size: 12px; }
 }
 .message-form { border-color: #bd7a8d; background: var(--paper); transition: border-color 180ms ease, box-shadow 180ms ease; }
 .message-form:focus-within { border-color: #b85c76; box-shadow: 0 0 0 3px rgb(184 92 118 / 20%); }
@@ -81,7 +103,7 @@
   .talk-page .character-stage { padding-top: 18px; }
   .momoka-portrait { width: min(94%, 390px); }
   .character-stage::before { left: 50%; translate: -50% 0; top: 10%; width: min(86%, 340px); height: 80%; border-width: 8px; }
-  .intro-composer { width: calc(100% - 32px); margin-bottom: 9px; }
+  .intro-composer { width: calc(100vw - 32px); max-width: 100%; box-sizing: border-box; margin-bottom: 9px; }
   .starter-list { gap: 7px; margin-bottom: 10px; }
   .starter-list button { flex: 0 0 auto; min-height: 44px; padding: 7px 13px; font-size: 12px; }
   .message-form input { font-size: 16px; padding-left: 13px; }
