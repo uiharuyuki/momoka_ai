@@ -14,9 +14,14 @@ test('Talk mock shows a pending three-dot reply before the fixed response', () =
   assert.doesNotMatch(talk, /fetch\s*\(/)
 })
 
-test('Talk composer has a dark frame, rose focus, and reduced-motion-safe reply effects', () => {
-  assert.match(css, /\.message-form input\s*\{[^}]*border:\s*1px solid #1f1718/s)
-  assert.match(css, /\.message-form input:focus-visible\s*\{[^}]*#d87596/s)
+test('Talk composer has no dark frame, uses rose form focus, and avoids a double input ring', () => {
+  assert.doesNotMatch(css, /#1f1718/)
+  assert.match(css, /\.message-form\s*\{[^}]*border-color:\s*#bd7a8d/s)
+  assert.match(css, /\.message-form:focus-within\s*\{[^}]*border-color:\s*#b85c76[^}]*box-shadow:\s*0 0 0 3px rgb\(184 92 118 \/ 20%\)/s)
+  assert.match(css, /\.message-form input\s*\{[^}]*border:\s*0[^}]*outline:\s*none/s)
+  assert.doesNotMatch(css, /\.message-form input:focus(?:-visible)?\s*\{/)
+  assert.match(css, /\.message-form button:not\(:disabled\)\s*\{[^}]*transition:/s)
+  assert.match(css, /\.message-form button:not\(:disabled\):hover/)
   assert.match(css, /\.message-character \.message-content\s*\{[^}]*talk-reply-in/s)
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.message-character \.message-content, \.typing-dots span\s*\{\s*animation:\s*none/s)
 })
