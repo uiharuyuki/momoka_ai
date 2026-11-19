@@ -147,6 +147,7 @@
 .cafe-wave-fill { fill: #f3d9c8; opacity: .94; }
 .cafe-wave-glint { fill: none; stroke: #fff8ed; stroke-width: 4; stroke-linecap: round; opacity: .9; animation: cafe-wave-drift 5.5s ease-in-out infinite alternate; }
 @keyframes cafe-wave-drift { from { transform: translateX(-9px) translateY(1px); } to { transform: translateX(9px) translateY(-3px); } }
-.talk-page-intro .intro-composer { position: relative; z-index: 3; }
+.talk-page-intro .cafe-wave { mask-image: linear-gradient(to bottom, transparent, #0009 44%, #000 95%); }
+.talk-page-intro .intro-composer { position: relative; z-index: 3; margin-block-start: clamp(-80px, -7vh, -52px); }
 .talk-page-intro .starter-list button { box-shadow: 0 3px 12px rgb(111 74 57 / 10%); }
 @media (prefers-reduced-motion: reduce) { .cafe-wave-glint { animation: none; } }
