@@ -136,31 +136,6 @@ export function TalkPage({ portraitMode: preference }: { portraitMode: PortraitM
   const smileTimer = useRef<number | null>(null)
 
   useEffect(() => {
-    const page = scene.current
-    const viewport = window.visualViewport
-    if (mode !== 'intro' || !page || !viewport) return
-    const sync = () => {
-      const bounds = page.getBoundingClientRect()
-      // iOS can pan the visual viewport while keeping the layout viewport tall.
-      const top = Math.max(0, viewport.offsetTop - bounds.top)
-      const bottom = Math.max(0, bounds.bottom - viewport.offsetTop - viewport.height)
-      page.style.setProperty('--visible-top-gap', viewport.scale === 1 ? top + 'px' : '0px')
-      page.style.setProperty('--visible-bottom-gap', viewport.scale === 1 ? bottom + 'px' : '0px')
-    }
-    sync()
-    viewport.addEventListener('resize', sync)
-    viewport.addEventListener('scroll', sync)
-    page.addEventListener('focusin', sync)
-    return () => {
-      viewport.removeEventListener('resize', sync)
-      viewport.removeEventListener('scroll', sync)
-      page.removeEventListener('focusin', sync)
-      page.style.removeProperty('--visible-top-gap')
-      page.style.removeProperty('--visible-bottom-gap')
-    }
-  }, [mode])
-
-  useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const timers = new Set<number>()
     let cancelled = false
@@ -328,7 +303,6 @@ export function TalkPage({ portraitMode: preference }: { portraitMode: PortraitM
     field.focus({ preventScroll: true })
     requestAnimationFrame(() => {
       field.setSelectionRange(field.value.length, field.value.length)
-      if (window.matchMedia('(max-width: 720px)').matches) return
       field.scrollIntoView({ block: 'center', inline: 'nearest',
         behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
     })
